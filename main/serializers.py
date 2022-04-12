@@ -57,3 +57,20 @@ class OurContactsSerializer(serializers.ModelSerializer):
         model = OurContacts
         exclude = ("id", )
 
+
+class SliderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Slider
+        exclude = ("id", )
+
+
+class OurAdvantagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OurAdvantages
+        exclude = ("id", )
+
+
+class FooterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Footer
+        exclude = ("id", )

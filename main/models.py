@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy
+from .validators import validate_file_extensions
 
 
 class Collection(models.Model):
@@ -128,8 +129,10 @@ class OurContacts(models.Model):
 
 class CallbackRequest(models.Model):
     class DidCallback(models.TextChoices):
-        yes = "Y", gettext_lazy("Yes")
-        no = "No", gettext_lazy("No")
+        # yes = "Y", gettext_lazy("Yes")
+        # no = "N", gettext_lazy("No")
+        yes = gettext_lazy("Yes")
+        no = gettext_lazy("No")
 
     name = models.CharField(max_length=255)
     number = models.CharField(max_length=255)
@@ -142,3 +145,40 @@ class CallbackRequest(models.Model):
     class Meta:
         verbose_name = "Обратный звонок"
         verbose_name_plural = "Обратные звонки"
+
+
+class Slider(models.Model):
+    image = models.ImageField(upload_to="slider_image/")
+
+    class Meta:
+        verbose_name = "Слайдер"
+        verbose_name_plural = "Слайдеры"
+
+
+class OurAdvantages(models.Model):
+    icon = models.ImageField('Image', upload_to="our_advantages/", validators=[validate_file_extensions])
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Наши преимущества"
+        verbose_name_plural = "Наши преимущества"
+
+
+class Footer1th(models.Model):
+    logo = models.ImageField(upload_to="logos/")
+    text_field = models.TextField()
+
+    def __str__(self):
+        return str(self.pk)
+
+    class Meta:
+        verbose_name = "Футер"
+        verbose_name_plural = "Футер"
+
+
+class Footer2th(models.Model):
+    pass

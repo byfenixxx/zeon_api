@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from main.views import *
@@ -15,5 +17,11 @@ urlpatterns = [
     path("api/v1/aboutus/", AboutUsApiView.as_view()),
     path("api/v1/publicoffer/", PublicOfferApiView.as_view()),
     path("api/v1/newproducts/", NewProductsApiView.as_view()),
-    path("api/v1/ourcontacts/", OurContactsApiView.as_view())
+    path("api/v1/ourcontacts/", OurContactsApiView.as_view()),
+    path("api/v1/sliders/", SliderApiView.as_view()),
+    path("api/v1/ouradvantages/", OurAdvantagesApiView.as_view()),
+    path("api/v1/footer/", FooterApiView.as_view())
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

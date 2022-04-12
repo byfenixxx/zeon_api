@@ -1,4 +1,4 @@
-from rest_framework import status, generics
+from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -68,3 +68,18 @@ class NewProductsApiView(generics.ListAPIView):
 class OurContactsApiView(generics.ListAPIView):
     queryset = OurContacts.objects.all()
     serializer_class = OurContactsSerializer
+
+
+class SliderApiView(generics.ListAPIView):
+    queryset = Slider.objects.all()
+    serializer_class = SliderSerializer
+
+
+class OurAdvantagesApiView(generics.ListAPIView):
+    queryset = OurAdvantages.objects.all()
+    serializer_class = OurAdvantagesSerializer
+
+
+class FooterApiView(generics.ListAPIView):
+    queryset = Footer.objects.all()
+    serializer_class = FooterSerializer
