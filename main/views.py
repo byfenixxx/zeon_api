@@ -83,3 +83,8 @@ class OurAdvantagesApiView(generics.ListAPIView):
 class FooterApiView(generics.ListAPIView):
     queryset = Footer.objects.all()
     serializer_class = FooterSerializer
+
+
+class FavouritesApiView(generics.ListAPIView):
+    queryset = Product.objects.filter(is_favourites=True)
+    serializer_class = ProductSerializer

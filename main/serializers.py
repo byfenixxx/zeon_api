@@ -74,3 +74,4 @@ class FooterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Footer
         exclude = ("id", )
+

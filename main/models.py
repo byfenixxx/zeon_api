@@ -1,7 +1,11 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy
 from .validators import validate_file_extensions
+
+
+User = get_user_model()
 
 
 class Collection(models.Model):
@@ -42,6 +46,7 @@ class Product(models.Model):
     fabric = models.CharField(max_length=255)
     is_hit_of_sales = models.BooleanField(default=False)
     is_new = models.BooleanField(default=False)
+    is_favourites = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Товар"
@@ -168,9 +173,23 @@ class OurAdvantages(models.Model):
         verbose_name_plural = "Наши преимущества"
 
 
-class Footer1th(models.Model):
+class Footer(models.Model):
+    class ContactType(models.TextChoices):
+        PHONE_NUMBER = "PN", gettext_lazy("Phone Number")
+        EMAIL = "EM", gettext_lazy("Email")
+        INSTAGRAM = "IG", gettext_lazy("Instagram")
+        TELEGRAM = "TG", gettext_lazy("Telegram")
+        WHATSAPP = "WA", gettext_lazy("Whatsapp")
+
     logo = models.ImageField(upload_to="logos/")
     text_field = models.TextField()
+    contact_type = models.CharField(max_length=2, choices=ContactType.choices, null=True)
+    contact = models.CharField(max_length=255, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.contact_type == "WA":
+            self.contact = "https://whatsapp/" + slugify(self.contact)
+        return super(Footer, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.pk)
@@ -179,6 +198,3 @@ class Footer1th(models.Model):
         verbose_name = "Футер"
         verbose_name_plural = "Футер"
 
-
-class Footer2th(models.Model):
-    pass
