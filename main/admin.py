@@ -69,12 +69,22 @@ class PublicOfferAdmin(admin.ModelAdmin):
     form = PublicOfferAdminForm
 
 
+class CartItemsInline(admin.TabularInline):
+    model = CartItems
+    extra = 1
+
+
 @admin.register(CallbackRequest)
-class CallbackRequest(admin.ModelAdmin):
+class CallbackRequestAdmin(admin.ModelAdmin):
     readonly_fields = ("type_of_appeal", )
     search_fields = ("name", "number")
     list_display = ("name", "number")
     list_filter = ("did_callback", )
+
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    inlines = [CartItemsInline]
 
 
 admin.site.register(Product, ProductAdmin)
@@ -88,3 +98,4 @@ admin.site.register(OurContacts)
 admin.site.register(Slider)
 admin.site.register(OurAdvantages)
 admin.site.register(Footer)
+admin.site.register(CustomUser)

@@ -75,3 +75,23 @@ class FooterSerializer(serializers.ModelSerializer):
         model = Footer
         exclude = ("id", )
 
+
+class CartItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+
+    class Meta:
+        model = CartItems
+        exclude = ("id", )
+
+
+class CartSerializer(serializers.ModelSerializer):
+    products = CartItemSerializer(many=True, write_only=True)
+
+    def to_representation(self, instance):
+        representation = super(CartSerializer, self).to_representation(instance)
+        representation["products"] = CartItemSerializer(CartItems.objects.filter(cart=instance), many=True).data
+        return representation
+
+    class Meta:
+        model = Cart
+        exclude = ("id", )

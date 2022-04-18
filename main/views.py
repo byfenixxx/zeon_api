@@ -51,7 +51,7 @@ class HelpApiView(generics.ListAPIView):
 
 
 class AboutUsApiView(generics.ListAPIView):
-    queryset = AboutUs
+    queryset = AboutUs.objects.all()
     serializer_class = AboutUsSerializer
 
 
@@ -88,3 +88,8 @@ class FooterApiView(generics.ListAPIView):
 class FavouritesApiView(generics.ListAPIView):
     queryset = Product.objects.filter(is_favourites=True)
     serializer_class = ProductSerializer
+
+
+class CartApiView(generics.ListAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer

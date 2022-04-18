@@ -198,3 +198,35 @@ class Footer(models.Model):
         verbose_name = "Футер"
         verbose_name_plural = "Футер"
 
+
+class CustomUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    surname = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255)
+    phone_number = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
+    products = models.ManyToManyField(Product, through="CartItems")
+    discount = models.IntegerField(default=0)
+    total_sum = models.DecimalField(max_digits=20, decimal_places=2)
+
+
+class CartItems(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
+    quantity = models.PositiveSmallIntegerField(default=1)
+
+    class Meta:
+        unique_together = ["cart", "product"]
