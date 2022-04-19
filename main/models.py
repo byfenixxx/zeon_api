@@ -37,8 +37,8 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     articul = models.CharField(max_length=255, unique=True)
     colors = models.ManyToManyField(Color)
-    price = models.IntegerField()
-    old_price = models.IntegerField(null=True)
+    price = models.DecimalField(max_digits=20, decimal_places=2)
+    old_price = models.DecimalField(max_digits=20, decimal_places=2, null=True)
     description = models.TextField()
     size = models.TextField()
     material_composition = models.TextField()
@@ -220,7 +220,8 @@ class Cart(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
     products = models.ManyToManyField(Product, through="CartItems")
     discount = models.IntegerField(default=0)
-    total_sum = models.DecimalField(max_digits=20, decimal_places=2)
+    total_sum = models.DecimalField(max_digits=20, decimal_places=2, null=True)
+    final_total_sum = models.DecimalField(max_digits=30, decimal_places=2, null=True)
 
 
 class CartItems(models.Model):

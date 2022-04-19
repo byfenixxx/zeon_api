@@ -85,6 +85,7 @@ class CallbackRequestAdmin(admin.ModelAdmin):
 @admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
     inlines = [CartItemsInline]
+    list_display = ("id", )
 
 
 admin.site.register(Product, ProductAdmin)

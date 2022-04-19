@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -16,7 +16,10 @@ class ProductApiView(APIView):
         search = request.query_params.get("search")
         if search:
             products = Product.objects.filter(title__icontains=search)
-            return Response(ProductSerializer(products, many=True).data)
+            if products:
+                return Response(ProductSerializer(products, many=True).data)
+            return Response(ProductSerializer(Product.objects.order_by("?")[:5], many=True).data)
+
         if not pk:
             products = Product.objects.all()
             return Response(ProductSerializer(products, many=True).data)
@@ -90,6 +93,9 @@ class FavouritesApiView(generics.ListAPIView):
     serializer_class = ProductSerializer
 
 
-class CartApiView(generics.ListAPIView):
+# class CartApiView(generics.ListAPIView):
+#     queryset = Cart.objects.all()
+#     serializer_class = CartSerializer
+class CartApiView(viewsets.ModelViewSet):
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
