@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "ckeditor",
     "main",
-    'drf_yasg'
+    'drf_yasg',
+    "colorfield"
 ]
 
 MIDDLEWARE = [

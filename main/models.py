@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy
+from colorfield.fields import ColorField
 from .validators import validate_file_extensions
 
 
@@ -22,6 +23,7 @@ class Collection(models.Model):
 
 class Color(models.Model):
     title = models.CharField(max_length=255)
+    rgb = ColorField()
 
     class Meta:
         verbose_name = "Цвет"
@@ -219,9 +221,13 @@ class CustomUser(models.Model):
 class Cart(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
     products = models.ManyToManyField(Product, through="CartItems")
-    discount = models.IntegerField(default=0)
+    discount = models.DecimalField(max_digits=20, decimal_places=2, null=True)
     total_sum = models.DecimalField(max_digits=20, decimal_places=2, null=True)
     final_total_sum = models.DecimalField(max_digits=30, decimal_places=2, null=True)
+
+    class Meta:
+        verbose_name = "Корзина"
+        verbose_name_plural = "Корзина"
 
 
 class CartItems(models.Model):

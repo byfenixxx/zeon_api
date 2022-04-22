@@ -9,23 +9,30 @@ class ProductImageSerializer(serializers.ModelSerializer):
         fields = ("image", )
 
 
+class ColorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Color
+        exclude = ("id", )
+
+
 class ProductSerializer(serializers.ModelSerializer):
     collection = serializers.SlugRelatedField(slug_field="title", read_only=True)
     images = ProductImageSerializer(many=True)
+    colors = ColorSerializer(many=True)
 
     class Meta:
         model = Product
         fields = (
             "title", "articul", "price", "old_price",
             "description", "size", "material_composition",
-            "collection", "images"
+            "collection", "images", "colors"
         )
 
 
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
-        exclude = ("id", )
+        fields = "__all__"
 
 
 class NewsSerializer(serializers.ModelSerializer):
@@ -84,6 +91,7 @@ class CartItemsSerializer(serializers.ModelSerializer):
         representation["title"] = instance.product.title
         representation["images"] = ProductImageSerializer(instance.product.images, many=True).data
         representation["size"] = instance.product.size
+        representation["color"] = ColorSerializer(instance.product.colors, many=True).data
         return representation
 
     class Meta:
@@ -100,6 +108,7 @@ class CartSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         total_sum = 0
         discount = 0
+        print(validated_data)
         products = validated_data.pop("products")
         cart = Cart.objects.create(**validated_data)
         for prod in products:

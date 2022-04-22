@@ -88,9 +88,13 @@ class CartAdmin(admin.ModelAdmin):
     list_display = ("id", )
 
 
+@admin.register(Color)
+class ColorAdmin(admin.ModelAdmin):
+    list_display = ("title", "rgb")
+
+
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Collection)
-admin.site.register(Color)
 admin.site.register(News, NewsAdmin)
 admin.site.register(Help)
 admin.site.register(AboutUs, AboutUsAdmin)
